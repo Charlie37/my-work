@@ -1,0 +1,34 @@
+// AMFX: MEL - textureFile V1.0 2014/03/21
+// Rename all texture files in Maya
+
+string $window_name = `window -title "textureFile" 
+-menuBar true 
+-widthHeight 483 203`; 
+
+// All the UI elements below are organized in column 
+columnLayout; 
+
+$textNetwork = `textFieldGrp -label "Network:" -text "yvvno1-79"`; 
+$textIDlbl = `textFieldGrp -label "ID:" -text "E445164"`; 
+$textProject = `textFieldGrp -label "Network:" -text "proto"`; 
+
+string $textN = `textFieldGrp -query -text $textNetwork`; 
+string $textIDI = `textFieldGrp -query -text $textIDlbl`;
+string $textP = `textFieldGrp -query -text $textProject`; 
+string $allTex[]=`ls -tex`;
+
+button -label "Execute" -command("for ($t in $allTex){ $tName=$t+\".fileTextureName\"; if(objExists($tName)) { string $old=`getAttr $tName`; $final = $textN + \"/\" + $textIDI + \"/RENDER_/\" + $textP + filepart($old); string $set=`setAttr $tName -type \"string\" $final`; print($set); } }") -width 100;
+button -label "Close" -command("deleteUI -window " + $window_name) -width 100;
+showWindow $window_name;
+
+global proc string filepart( string $path )
+// Extracts the path portion of an absolute filepath.
+// Input: e.g. "D:/projects/default/scenes/myScene.mb"
+// Result: e.g. "myScene.mb"
+//
+// Filepath can be delimited with
+// either slash ("/" or "\")
+{
+  string $filepart = match( "[^/\\]*$", $path );
+  return $filepart;
+}
