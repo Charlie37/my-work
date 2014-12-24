@@ -39,9 +39,8 @@ from bpy.props import *
 from mathutils import *
 from math import *
 
-# A very simple tool.
 # Moves the modifier "Armature" to the top of modifiers' list.
-# Can be updated with modifier's name as parameter and dynamic retrieval of modifiers' total count.
+# Can be updated with modifier's name as parameter.
 
 # path: Applications/blender/Content/MacOS/2.70/scripts/addons
 # in Blender: add using User Preferences > Addons, then refresh list and select addon.
@@ -68,8 +67,11 @@ class modifier_move(bpy.types.Operator):
     def execute(self, context):
         print("Action")
 
-        for num in range(4):
-            bpy.ops.object.modifier_move_up(modifier="Armature")
+        for obj in bpy.context.scene.objects:
+            bpy.context.scene.objects.active = obj
+            length = len(obj.modifiers)
+            for num in range(length):
+                bpy.ops.object.modifier_move_up(modifier="Armature")
 
         #mesh update
         if self.AutoUpdate != 0:
