@@ -24,6 +24,8 @@ class renderSettings(bpy.types.Operator):
         scene.render.resolution_y = 1620
         scene.render.resolution_percentage = 100
         scene.render.use_border = False
+        scene.cycles.samples = 1400
+        scene.cycles.no_caustics = True
         
         return {'FINISHED'}
 
