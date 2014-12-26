@@ -18,11 +18,11 @@ class hairSettings(bpy.types.Operator):
     
     def execute(self, context):
     
-        bpy.context.space_data.context = 'PARTICLES'
+        bpy.types.SpaceProperties.context = 'PARTICLES'
 
         #Set particle systems: hair_body (0), hair_neck (3), hair_bec (4)
         # hair_body
-        bpy.context.object.active_index = 0
+        bpy.types.ParticleSystem.active_index = 0
         bpy.data.particles["ParticleSettings"].child_nbr = 50
         bpy.data.particles["ParticleSettings"].rendered_child_count = 300
         bpy.data.particles["ParticleSettings"].clump_factor = 0.05
