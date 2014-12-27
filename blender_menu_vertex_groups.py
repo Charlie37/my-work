@@ -6,8 +6,7 @@ bl_info = {
 
 import bpy
 
-"""This menu counts the number of vertex groups of the selected object.
-   We can access it via Object menu, or Space Bar > Search."""
+"""This menu counts the number of vertex groups of the selected object"""
 class ObjectVertexGroups(bpy.types.Operator):
     """Object Vertex Groups"""
     bl_idname = "object.vertex_groups"
@@ -21,9 +20,26 @@ class ObjectVertexGroups(bpy.types.Operator):
         cursor = scene.cursor_location
         obj = scene.objects.active
 
+        vgdict = {}
+        vgcpt = 0
+        mesh = obj.to_mesh(scene, True, "PREVIEW")
+        for g in obj.vertex_groups:
+           if g.name == "tete" or g.name == "corps":
+               vgcpt += 1
+               vgdict[g.index]=g.weight
+
+        meshcpt = 0
+        for vert in mesh.vertices:
+            for group in vert.groups:
+               gr = group.group
+               for gi in vgdict.keys():
+                   if gi == gr:
+                       meshcpt += 1
+               #print(vertex, g, g.weight)
+               
         group_names = [g.name for g in obj.vertex_groups]
         group_names_tot = len(group_names)
-        self.report({'INFO'}, "Total Vertex Groups: " + str(group_names_tot))
+        self.report({'INFO'}, "Vertex Groups: " + str(meshcpt) + "/" + str(vgcpt) + "/" + str(group_names_tot))
 
         return {'FINISHED'}
 
@@ -59,4 +75,5 @@ def unregister():
 
 
 if __name__ == "__main__":
+    print('-----executing------')
     register()
